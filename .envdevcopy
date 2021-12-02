@@ -1,0 +1,4 @@
+# dev
+DATABASE_URL=postgresql://postgres:123456789@localhost:5432/mydatabase?sslmode=disable
+# testing
+# DATABASE_URL=postgresql://postgres:123456789@localhost:5432/mytestingdatabase?sslmode=disable

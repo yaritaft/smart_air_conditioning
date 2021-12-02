@@ -1,0 +1,544 @@
+{
+	"info": {
+		"_postman_id": "4e2ffe3f-9697-40ed-933e-99c64ed118fa",
+		"name": "Minesweeper",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Step 0 - Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"dd\",\n    \"lastName\": \"cc\",\n    \"email\": \"myEmail2242@gmail.com\",\n    \"password\": \"aa\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/user/register",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"register"
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 1 - Get Token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"myEmail2242@gmail.com\",\n    \"password\": \"aa\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/user/login",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 2 - Create new Game",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authentication",
+						"value": "f6da554f-e89a-4a29-b0bc-81caf08b4226",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "authorization",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"rows\": 1,\n    \"columns\": 1,\n    \"amountOfMines\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/games/",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"games",
+						""
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 3 - Click cells",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"x\": 0,\n    \"y\": 0,\n    \"type\": \"Checked\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/games/{{GAME}}/click",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{GAME}}",
+						"click"
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 3 - Click cells Question",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"x\": 0,\n    \"y\": 0,\n    \"type\": \"Question\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/games/{{GAME}}/click",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{GAME}}",
+						"click"
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 3 - Click cells Flagged",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"x\": 0,\n    \"y\": 0,\n    \"type\": \"Flagged\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/games/{{GAME}}/click",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{GAME}}",
+						"click"
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 4 - Save or Restor Game",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/games/{{GAME}}/state",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{GAME}}",
+						"state"
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gather ongoing games",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"rows\": 1,\n    \"columns\": 1,\n    \"amountOfMines\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/games/ongoing",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"ongoing"
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gather all games",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"rows\": 1,\n    \"columns\": 1,\n    \"amountOfMines\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/games/",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"games",
+						""
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gather specific game",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "{{TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"rows\": 1,\n    \"columns\": 1,\n    \"amountOfMines\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/games/{{GAME}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{GAME}}"
+					],
+					"query": [
+						{
+							"key": "rows",
+							"value": "4",
+							"disabled": true
+						},
+						{
+							"key": "columns",
+							"value": "3",
+							"disabled": true
+						},
+						{
+							"key": "amountOfMines",
+							"value": "2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

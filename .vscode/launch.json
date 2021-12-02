@@ -1,0 +1,54 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [{
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Application (TS)",
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node",
+        "windows": {
+          "type": "node",
+          "request": "launch",
+          "name": "Debug Application (TS)",
+          "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/tsnd.cmd",
+          "args": ["${workspaceRoot}/src/index.ts" /*, "--respawn", "--transpile-only"*/ ],
+          // "runtimeArgs": ["--preserve-symlinks"],
+          // "restart": true,
+          "protocol": "inspector",
+          "cwd": "${workspaceFolder}",
+          "internalConsoleOptions": "openOnSessionStart",
+          "console": "internalConsole",
+          "outputCapture": "std"
+        },
+        "args": ["${workspaceRoot}/src/index.ts"],
+        "protocol": "inspector",
+        "cwd": "${workspaceFolder}",
+        "internalConsoleOptions": "openOnSessionStart",
+        "console": "internalConsole",
+        "outputCapture": "std"
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug After Build",
+        "program": "${workspaceFolder}/dist/index.js",
+        "cwd": "${workspaceFolder}/dist",
+        "internalConsoleOptions": "openOnSessionStart",
+        "console": "internalConsole",
+        "outputCapture": "std"
+      },
+      {
+        "name": "Debug Jest Tests",
+        "type": "node",
+        "request": "launch",
+        "windows": {
+          "runtimeArgs": ["node_modules\\jest\\bin\\jest.js", "--runInBand"]
+        },
+        "runtimeArgs": ["node_modules/jest/bin/jest.js", "--runInBand"],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+      }
+    ]
+  }
