@@ -1,17 +1,34 @@
-import {EntitySchema} from "typeorm";
-import { Session } from "../models/Session";
+import { EntitySchema } from "typeorm";
+import { DeviceAccount } from "../models/DeviceSession";
 
-export const SessionEntity = new EntitySchema<Session>({
-  name: "Session",
-  target: Session,
+export const SessionEntity = new EntitySchema<DeviceAccount>({
+  name: "DeviceAccount",
+  target: DeviceAccount,
   columns: {
     token: {
       type: String,
-      primary: true,
-      generated: "uuid"
+      generated: "uuid",
+      nullable: true,
     },
-    userId: {
-      type: String
-    }
-  }
+    serialNumber: {
+      type: String,
+      primary: true,
+    },
+    salt: {
+      type: String,
+    },
+    hashedPass: {
+      type: String,
+    },
+    firstRegistration: {
+      type: "timestamptz",
+      nullable: true,
+      default: null,
+    },
+    mostRecentRegistration: {
+      type: "timestamptz",
+      nullable: true,
+      default: null,
+    },
+  },
 });

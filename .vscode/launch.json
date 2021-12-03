@@ -12,7 +12,7 @@
           "type": "node",
           "request": "launch",
           "name": "Debug Application (TS)",
-          "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/tsnd.cmd",
+          "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/tsnd",
           "args": ["${workspaceRoot}/src/index.ts" /*, "--respawn", "--transpile-only"*/ ],
           // "runtimeArgs": ["--preserve-symlinks"],
           // "restart": true,
