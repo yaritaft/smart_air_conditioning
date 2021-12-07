@@ -5,7 +5,6 @@ import axios from "axios";
 import { Connection, createConnection } from "typeorm";
 import { DeviceEntity } from "../../entities/Device.entity";
 import { DeviceAccountEntity } from "../../entities/DeviceAccount.entity";
-import { PlatformExpress } from "@tsed/platform-express";
 import { UserController } from "../../controllers/ReportController";
 import { AdminAccountEntity } from "../../entities/AdminAccount.entity";
 
