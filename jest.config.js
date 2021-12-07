@@ -1,4 +1,3 @@
-const { defaults } = require("jest-config");
 module.exports = {
   testTimeout: 60000,
   clearMocks: true,
