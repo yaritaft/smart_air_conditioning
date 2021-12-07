@@ -1,20 +1,21 @@
+import { Alert } from "./Alert";
+import { Device } from "./Device";
+
 export enum HealthStatus {
   OK = "OK",
   NeedsFilter = "needs_filter",
   NeedsService = "needs_service",
 }
 
-export class ReportMetrics {
-  temperature: number;
-  humidity: number;
-  carbonMonoxide: number;
-}
-
 export class Report {
   reportId: string;
   serialNumber: string;
-  reportMetrics: ReportMetrics;
-  healthStatus: HealthStatus;
-  timestampCreatedInDeviceAt: Date;
-  timestampReceivedInServerAt: Date;
+  humidity: number;
+  carbonMonoxide: number;
+  temperature: number;
+  healthStatus?: HealthStatus;
+  timestampCreatedInDeviceAt: string;
+  timestampReceivedInServerAt?: string;
+  // FK alert
+  alertId?: string;
 }

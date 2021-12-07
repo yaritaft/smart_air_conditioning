@@ -1,3 +1,5 @@
+import { Device } from "./Device";
+
 export class DeviceSession {
   token: string;
   userId: string;
@@ -17,10 +19,12 @@ export class NewDeviceToken {
 }
 
 export class DeviceAccount {
-  serialNumber: string;
+  deviceAccountId: string;
   hashedPass: string;
   salt: string;
   token: string;
   firstRegistration?: Date;
   mostRecentRegistration?: Date;
+  // FK device
+  serialNumber: string;
 }

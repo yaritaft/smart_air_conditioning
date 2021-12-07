@@ -1,4 +1,5 @@
-import { HealthStatus, Report, ReportMetrics } from "./Report";
+import { Device } from "./Device";
+import { Report } from "./Report";
 
 export enum ResolveState {
   NEW = "NEW",
@@ -13,10 +14,13 @@ export enum ViewState {
 
 export class Alert {
   alertId: string;
-  report: Report;
-  timestampAlertReceivedInServer: Date;
-  timestampAlertCreatedInDeviceAt: Date;
-  timestampAlertSolvedInDeviceAt?: Date;
+  reports: Report[];
+  timestampAlertReceivedInServer: string;
+  timestampAlertCreatedInDeviceAt: string;
+  timestampAlertSolvedInDeviceAt?: string;
   textualAlert: string;
+  resolveState: ResolveState;
   viewState: ViewState;
+  // FKS device
+  serialNumber: string;
 }

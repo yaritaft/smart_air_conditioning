@@ -1,9 +1,11 @@
-import { BodyParams, Controller, Get, Inject, Post } from "@tsed/common";
+import { BodyParams, Controller, Get, HeaderParams, Inject, Injectable, Post } from "@tsed/common";
 import { DeviceSession, DeviceLoginSession, NewDeviceToken } from "../models/DeviceSession";
 import { ApiDataResponse, ApiErrorResponse } from "./types/ApiResponses";
 import { SessionService } from "../services/SessionService";
-import { HttpResponse, Ok } from "./types/HttpResponses";
+import { BadRequest, HttpResponse, Ok } from "./types/HttpResponses";
+import { AdminLoginAttempt } from "../models/AdminAccount";
 
+@Injectable()
 @Controller("/session")
 export class UserController {
   @Inject()
@@ -25,9 +27,22 @@ export class UserController {
   // async getStatus(): Promise<{}> {
   //   return {};
   // }
+
   @Post("/device/register")
   async registerDevice(@BodyParams() body: DeviceLoginSession): Promise<HttpResponse> {
-    const token = await this.sessionService.register(body.serialNumber, body.password);
+    const token = await this.sessionService.registerDevice(body.serialNumber, body.password);
     return new Ok(token);
+  }
+  @Post("/admin/login")
+  async adminLogin(@BodyParams() body: AdminLoginAttempt): Promise<HttpResponse> {
+    const token = await this.sessionService.logAdmin(body.username, body.password);
+    return new Ok(token);
+  }
+  @Post("/admin/logout")
+  async adminLogout(@HeaderParams() header: { token: string }): Promise<HttpResponse> {
+    return await this.sessionService
+      .logoutAdmin(header.token)
+      .then(() => new Ok("Logged out successfully."))
+      .catch(() => new BadRequest("Log out failed."));
   }
 }

@@ -1,15 +1,16 @@
 import { hashSync, genSaltSync } from "bcrypt-nodejs";
+import { AdminAccount } from "../models/AdminAccount";
 import { DeviceAccount } from "../models/DeviceSession";
 
 export class DeviceSessionCoreService {
-  async addEncodedPassword(password: string, deviceAccount: DeviceAccount): Promise<DeviceAccount> {
+  async addEncodedPassword(password: string, account: DeviceAccount | AdminAccount): Promise<DeviceAccount | AdminAccount> {
     const salt = await genSaltSync(10);
-    deviceAccount.hashedPass = await hashSync(password, salt);
-    return deviceAccount;
+    account.hashedPass = await hashSync(password, salt);
+    return account;
   }
 
-  checkSameHashedPassword(attemptingPassword: string, deviceAccount: DeviceAccount): Boolean {
-    const hashedAttemptingPassword = hashSync(attemptingPassword, deviceAccount.salt);
-    return deviceAccount.hashedPass === hashedAttemptingPassword;
+  checkSameHashedPassword(attemptingPassword: string, account: DeviceAccount | AdminAccount): Boolean {
+    const hashedAttemptingPassword = hashSync(attemptingPassword, account.salt);
+    return account.hashedPass === hashedAttemptingPassword;
   }
 }

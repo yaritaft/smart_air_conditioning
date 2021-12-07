@@ -1,18 +1,14 @@
 import { EntitySchema } from "typeorm";
 import { DeviceAccount } from "../models/DeviceSession";
 
-export const SessionEntity = new EntitySchema<DeviceAccount>({
+export const DeviceAccountEntity = new EntitySchema<DeviceAccount>({
   name: "DeviceAccount",
   target: DeviceAccount,
   columns: {
+    deviceAccountId: { type: String, primary: true },
     token: {
       type: String,
-      generated: "uuid",
       nullable: true,
-    },
-    serialNumber: {
-      type: String,
-      primary: true,
     },
     salt: {
       type: String,
@@ -30,5 +26,16 @@ export const SessionEntity = new EntitySchema<DeviceAccount>({
       nullable: true,
       default: null,
     },
+    // Fk device
+    serialNumber: {
+      type: String,
+    },
   },
+  // relations: {
+  //   device: {
+  //     type: "one-to-one",
+  //     target: "Device", // CategoryEntity
+  //     nullable: true,
+  //   },
+  // },
 });
