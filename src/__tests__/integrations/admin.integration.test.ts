@@ -34,7 +34,7 @@ describe("Rest", () => {
       password: "123456789",
       database: "mydatabase",
       synchronize: true,
-      entities: ["dist/**/*.entity.js"],
+      entities: ["src/**/*.entity.ts"],
     }).then((newConnection) => {
       connection = newConnection;
     });
