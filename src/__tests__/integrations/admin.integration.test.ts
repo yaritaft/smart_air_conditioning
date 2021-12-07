@@ -50,44 +50,6 @@ describe("Rest", () => {
   });
 
   describe("Post /api/session/admin/login", () => {
-    it("Register user", async () => {
-      const bodyAdminLogin = {
-        username: "0",
-        password: "0",
-      };
-      await connection.query(
-        "INSERT INTO admin_account (\"username\", \"token\", \"hashedPass\", \"salt\", \"name\", \"surname\") VALUES ('0','482ffc8e-79cf-40b1-a9e0-586334c250bb','$2a$10$rIS1yCjDlOvkUc2SUAYqSuKTuEt5Iyj5sfXz6LIs7K0TPyZyplnw6','$2a$10$rIS1yCjDlOvkUc2SUAYqSu', 'Barry','White')"
-      );
-      const response = await axios.post("http://0.0.0.0:8080/api/session/admin/login", bodyAdminLogin, {
-        headers: { Accept: "application/json" },
-      });
-      expect(response.data.data.token).toBeTruthy();
-      expect(response.status).toEqual(200);
-      // Test refresh token
-      const response2 = await axios.post("http://0.0.0.0:8080/api/session/admin/login", bodyAdminLogin, {
-        headers: { Accept: "application/json" },
-      });
-      expect(response.data.data.token).not.toEqual(response2.data.data.token);
-      expect(response2.status).toEqual(200);
-    });
-  });
-
-  describe("Logout /api/session/admin/logout", () => {
-    it("Register user", async () => {
-      const bodyAdminLogin = {
-        username: "0",
-        password: "0",
-      };
-      await connection.query(
-        "INSERT INTO admin_account (\"username\", \"token\", \"hashedPass\", \"salt\", \"name\", \"surname\") VALUES ('0','482ffc8e-79cf-40b1-a9e0-586334c250bb','$2a$10$rIS1yCjDlOvkUc2SUAYqSuKTuEt5Iyj5sfXz6LIs7K0TPyZyplnw6','$2a$10$rIS1yCjDlOvkUc2SUAYqSu', 'Barry','White')"
-      );
-      const response = await axios.post("http://0.0.0.0:8080/api/session/admin/login", bodyAdminLogin, {
-        headers: { Accept: "application/json" },
-      });
-      const responseLogout = await axios.post("http://0.0.0.0:8080/api/session/admin/logout", bodyAdminLogin, {
-        headers: { Accept: "application/json", token: response.data.data.token },
-      });
-      expect(response.status).toEqual(200);
-    });
+    it("Register user", async () => {});
   });
 });

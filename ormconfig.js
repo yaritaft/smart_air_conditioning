@@ -1,0 +1,35 @@
+module.exports = [
+  {
+    name: process.env.TYPEORM_NAME || "default",
+    migrations: ["src/migrations/*.ts"],
+    cli: {
+      migrationsDir: "src/migrations",
+    },
+    type: process.env.TYPEORM_CONNECTION || "postgres",
+    host: process.env.TYPEORM_HOST || "localhost",
+    port: process.env.TYPEORM_PORT || 5432,
+    username: process.env.TYPEORM_USERNAME || "postgres",
+    password: process.env.TYPEORM_PASSWORD || "123456789",
+    database: process.env.TYPEORM_DATABASE || "mydatabase",
+    synchronize: process.env.TYPEORM_SYNCHRONIZE || false,
+    logging: process.env.TYPEORM_LOGGING || true,
+    entities: ["dist/**/*.entity.js"],
+    migrationsTableName: "migrations_table",
+  },
+  {
+    name: "seed",
+    migrationsTableName: "seed_migrations",
+    migrations: ["src/seeds/*.ts"],
+    cli: {
+      migrationsDir: "src/seeds",
+    },
+    type: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "postgres",
+    password: "123456789",
+    database: "mydatabase",
+    synchronize: false,
+    logging: true,
+  },
+];

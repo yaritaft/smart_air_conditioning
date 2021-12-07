@@ -69,3 +69,26 @@ If you have both, ormconfig.json and the config inside the app it will use the c
 # Migrations
 
 If you use syncronize you dont have migrations, it is automatic. It is recomended to use migrations to be able to go back and forth between db changes. With syncronize it will sync the db every time you ran de app and you cannot go back, unless you switch the code again or something like that. For dev purpose syncronize it may be ok.
+
+Typeorm migrations works with ormconfig.json data but TSED works with configuration from server.ts.
+
+## Create your migration
+
+npm run migrations:create --migration_name=MIGRATION_NAME_HERE
+
+## Run migrations
+
+npm run migrations:run
+
+## Generate seeds for dev purposes
+
+npm run seed:generate --migration_name=MIGRATION_NAME_HERE
+or you can copy and paste a previous migration rename it with higher number and write your updates there. Dont forge to add a down way so you can revert your changes.
+
+## Generate seeds for dev purposes
+
+npm run seed:run
+
+## Generate seeds for dev purposes
+
+npm run seed:revert

@@ -2,3 +2,9 @@
 DATABASE_URL=postgresql://postgres:123456789@localhost:5432/mydatabase?sslmode=disable
 # testing
 # DATABASE_URL=postgresql://postgres:123456789@localhost:5432/mytestingdatabase?sslmode=disable
+TEMPERATURE_MIN_VALUE=20
+TEMPERATURE_MAX_VALUE=30
+HUMIDITY_MIN_VALUE=20
+HUMIDITY_MAX_VALUE=40
+CARBON_MONOXIDE_MIN_VALUE=10
+CARBON_MONOXIDE_MAX_VALUE=400
