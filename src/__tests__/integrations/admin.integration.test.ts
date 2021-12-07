@@ -21,7 +21,7 @@ describe("Rest", () => {
   // // afterAll(PlatformTest.reset);
   beforeAll(async () => {
     await PlatformTest.bootstrap(Server);
-    console.log(JSON.stringify(PlatformTest.callback()));
+    request = SuperTest(PlatformTest.callback());
   });
 
   beforeAll(async () => {
