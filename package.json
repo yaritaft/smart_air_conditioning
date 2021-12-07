@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf '{src,test}/**/*.{js,js.map}'",
     "build": "./node_modules/.bin/tsc -b",
-    "test": "npx tsc -b && jest --runInBand dist/.*test.js",
+    "test:compiled": "npx tsc -b && jest --runInBand dist/.*test.js",
     "test:unit": "cross-env NODE_ENV=test jest",
     "test:coverage": "cross-env NODE_ENV=test nyc mocha",
     "test:lint": "tslint --project tsconfig.json",
