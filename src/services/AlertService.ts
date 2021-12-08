@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import { Service } from "@tsed/di";
-import { Injectable } from "@tsed/common";
-import { Connection, Repository } from "typeorm";
-import "reflect-metadata";
+import { Inject, Injectable } from "@tsed/common";
+import { Repository } from "typeorm";
 import { ORMService } from "./ORMService";
 import { Report } from "../models/Report";
 import { ReportEntity } from "../entities/Report.entity";
@@ -10,7 +8,7 @@ import { Alert, ResolveState, ViewState } from "../models/Alert";
 import { AlertEntity } from "../entities/Alert.entity";
 
 interface CreateAlert {
-  errors: string;
+  errors: string | undefined;
   report: Report;
   repository: Repository<Alert>;
   repositoryReport: Repository<Report>;
@@ -26,27 +24,29 @@ interface ProcessAlert {
   repositoryReport: Repository<Report>;
   serialNumber: string;
 }
-@Service()
+
 @Injectable()
 export class AlertService {
-  private connection: Connection;
-  private repository: Repository<Alert>;
-  constructor(private ormService: ORMService) {}
+  @Inject()
+  private ormService: ORMService;
 
   validTemperature(report: Report): boolean {
     return (
       report.temperature >= Number(process.env.TEMPERATURE_MIN_VALUE) && report.temperature <= Number(process.env.TEMPERATURE_MAX_VALUE)
     );
   }
+
   validHumidity(report: Report): boolean {
     return report.humidity >= Number(process.env.HUMIDITY_MIN_VALUE) && report.humidity <= Number(process.env.HUMIDITY_MAX_VALUE);
   }
+
   validCarbonMonoxide(report: Report): boolean {
     return (
       report.carbonMonoxide >= Number(process.env.CARBON_MONOXIDE_MIN_VALUE) &&
       report.carbonMonoxide <= Number(process.env.CARBON_MONOXIDE_MAX_VALUE)
     );
   }
+
   validateReport(report: Report): string | undefined {
     const errors: string[] = [];
 
@@ -71,7 +71,7 @@ export class AlertService {
       timestampAlertCreatedInDeviceAt: report.timestampCreatedInDeviceAt,
       textualAlert: errors,
       resolveState: ResolveState.NEW,
-      viewState: ViewState.NEW,
+      viewState: ViewState.NEW
     };
     await repositoryReport.save({ ...report, alertId: newAlert.alertId });
     await repository.save(newAlert);
@@ -82,7 +82,7 @@ export class AlertService {
     await repository.save({
       ...activeAlert,
       timestampAlertSolvedInDeviceAt: new Date().toISOString(),
-      resolveState: ResolveState.RESOLVED,
+      resolveState: ResolveState.RESOLVED
     });
   }
 
@@ -92,7 +92,13 @@ export class AlertService {
     return updatedReport;
   }
 
-  async processActiveAlert({ errors, activeAlert, report, repository, repositoryReport }: HandleActiveAlert): Promise<void> {
+  async processActiveAlert({
+                             errors,
+                             activeAlert,
+                             report,
+                             repository,
+                             repositoryReport
+                           }: HandleActiveAlert): Promise<void> {
     if (!errors) {
       await this.solveAlert(activeAlert, repository);
     } else {
@@ -116,13 +122,12 @@ export class AlertService {
     for (const report of reports) {
       await this.processAlert({ report, repository, repositoryReport, serialNumber });
     }
-    const activeAlert = await repository.findOne({ resolveState: ResolveState.NEW, serialNumber });
-    return activeAlert;
+
+    return repository.findOne({ resolveState: ResolveState.NEW, serialNumber });
   }
 
   async getActiveAlerts(): Promise<Alert[]> {
     const repository = this.ormService.connection.getRepository(AlertEntity);
-    const activeAlerts = await repository.find({ resolveState: ResolveState.NEW });
-    return activeAlerts;
+    return repository.find({ resolveState: ResolveState.NEW });
   }
 }

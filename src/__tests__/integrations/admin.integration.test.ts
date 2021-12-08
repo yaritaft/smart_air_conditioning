@@ -1,11 +1,7 @@
 import { PlatformTest } from "@tsed/common";
-import * as SuperTest from "supertest";
+import SuperTest from "supertest";
 import { Server } from "../../server";
-import axios from "axios";
 import { Connection, createConnection } from "typeorm";
-import { DeviceEntity } from "../../entities/Device.entity";
-import { DeviceAccountEntity } from "../../entities/DeviceAccount.entity";
-import { UserController } from "../../controllers/ReportController";
 import { AdminAccountEntity } from "../../entities/AdminAccount.entity";
 
 const eraseData = async (connection: Connection) => {
@@ -15,7 +11,7 @@ const eraseData = async (connection: Connection) => {
 describe("Rest", () => {
   // bootstrap your Server to load all endpoints before run your test
   let request: SuperTest.SuperTest<SuperTest.Test>;
-  let connection: Connection | undefined;
+  let connection: Connection;
   // beforeAll(PlatformTest.bootstrap(Server));
   // // afterAll(PlatformTest.reset);
   beforeAll(async () => {
@@ -33,7 +29,7 @@ describe("Rest", () => {
       password: "123456789",
       database: "mydatabase",
       synchronize: true,
-      entities: ["src/**/*.entity.ts"],
+      entities: ["src/**/*.entity.ts"]
     }).then((newConnection) => {
       connection = newConnection;
     });
@@ -49,6 +45,7 @@ describe("Rest", () => {
   });
 
   describe("Post /api/session/admin/login", () => {
-    it("Register user", async () => {});
+    it("Register user", async () => {
+    });
   });
 });

@@ -1,7 +1,7 @@
 import { BodyParams, Controller, Get, HeaderParams, Inject, Post } from "@tsed/common";
 import { Report } from "../models/Report";
 import { Ok } from "./types/HttpResponses";
-import { ReportService, UpdateACResponse } from "../services/ReportService";
+import { ReportService } from "../services/ReportService";
 import { AlertService } from "../services/AlertService";
 import { SessionService } from "../services/SessionService";
 
@@ -13,13 +13,6 @@ export class AnalyticsController {
   alertService: AlertService;
   @Inject()
   sessionService: SessionService;
-
-  private async validateAuth({ token }: { token: string }) {
-    const user = await this.sessionService.gatherUserIdByToken(token);
-    if (!user) {
-      throw new Error("Not valid token");
-    }
-  }
 
   @Get("/recently-registered-devices")
   async getRecentlyRegisteredDevices(
@@ -41,6 +34,7 @@ export class AnalyticsController {
     const result = await this.reportService.processReports(header.token, body);
     return new Ok(result);
   }
+
   @Get("/active-alerts")
   async getActiveAlerts(
     @BodyParams() body: Omit<Report, "timestampReceivedInServerAt">[],
@@ -50,6 +44,7 @@ export class AnalyticsController {
     const result = await this.alertService.getActiveAlerts();
     return new Ok({ alerts: result });
   }
+
   // TODO: Convert to get with url ids for dates and device
   @Post("/reports-from-device-by-daterange")
   async reportsFromDeviceByDateRange(
@@ -59,5 +54,12 @@ export class AnalyticsController {
     this.validateAuth(header);
     const result = await this.reportService.reportsFromDeviceByDateRange(body);
     return new Ok({ reports: result });
+  }
+
+  private async validateAuth({ token }: { token: string }) {
+    const user = await this.sessionService.gatherUserIdByToken(token);
+    if (!user) {
+      throw new Error("Not valid token");
+    }
   }
 }

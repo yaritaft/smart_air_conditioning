@@ -1,6 +1,3 @@
-import { Alert } from "./Alert";
-import { Device } from "./Device";
-
 export enum HealthStatus {
   OK = "OK",
   NeedsFilter = "needs_filter",

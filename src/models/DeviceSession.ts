@@ -1,5 +1,3 @@
-import { Device } from "./Device";
-
 export class DeviceSession {
   token: string;
   userId: string;

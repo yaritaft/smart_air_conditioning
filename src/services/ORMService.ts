@@ -1,14 +1,14 @@
-import "reflect-metadata";
-import { Service } from "@tsed/di";
 import { AfterRoutesInit, Injectable } from "@tsed/common";
 import { TypeORMService } from "@tsed/typeorm";
 import { Connection, Repository } from "typeorm";
 
-@Service()
 @Injectable()
 export class ORMService implements AfterRoutesInit {
   public connection: Connection;
-  constructor(private ormService: TypeORMService) {}
+
+  constructor(private ormService: TypeORMService) {
+  }
+
   $afterRoutesInit() {
     this.connection = this.ormService.get("default")!; // get connection by name
   }

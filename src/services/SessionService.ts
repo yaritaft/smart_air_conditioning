@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import { Service } from "@tsed/di";
 import { Injectable } from "@tsed/common";
 import { ORMService } from "./ORMService";
@@ -7,18 +6,18 @@ import { AdminAccountEntity } from "../entities/AdminAccount.entity";
 import { DeviceAccount, NewDeviceToken } from "../models/DeviceSession";
 import { DeviceSessionCoreService } from "../core/SessionCore";
 import { v4 as uuidv4 } from "uuid";
-import { AdminAccount } from "../models/AdminAccount";
 import { IsNull, Not } from "typeorm";
 
 @Service()
 @Injectable()
 export class SessionService {
-  constructor(private ormService: ORMService, private deviceSessionCoreService: DeviceSessionCoreService) {}
+  constructor(private ormService: ORMService, private deviceSessionCoreService: DeviceSessionCoreService) {
+  }
 
-  async gatherUserIdByToken(token: string): Promise<AdminAccount> {
+  async gatherUserIdByToken(token: string) {
     const repository = this.ormService.connection.getRepository(AdminAccountEntity);
-    const adminAccount = await repository.findOne({ token });
-    return adminAccount;
+
+    return repository.findOne({ token });
   }
 
   // async generateToken(userId: string): Promise<string> {
@@ -28,10 +27,10 @@ export class SessionService {
   //   return session.token;
   // }
 
-  async getTokenByUserId(username: string): Promise<string> {
+  async getTokenByUserId(username: string) {
     const repository = this.ormService.connection.getRepository(AdminAccountEntity);
     const session = await repository.findOne({ username });
-    return session.token;
+    return session?.token;
   }
 
   async logAdmin(username: string, password: string): Promise<{ token: string }> {
@@ -55,7 +54,7 @@ export class SessionService {
       throw new Error(`No user with given token.`);
     }
     const repository = this.ormService.connection.getRepository(AdminAccountEntity);
-    await repository.save({ ...user, token: null });
+    await repository.save({ ...user, token: null } as any);
   }
 
   async getDeviceByToken(token: string): Promise<DeviceAccount> {
@@ -67,7 +66,7 @@ export class SessionService {
     return deviceAccount;
   }
 
-  async getRecentlyRegistered(token: string): Promise<{ serialNumber: string; mostRecentRegistration: Date }[]> {
+  async getRecentlyRegistered(token: string) {
     const user = await this.gatherUserIdByToken(token);
     if (user === undefined || user === null) {
       throw new Error("No user found with given token.");
@@ -75,41 +74,47 @@ export class SessionService {
     const repository = this.ormService.connection.getRepository(DeviceAccountEntity);
     const deviceAccounts = await repository.find({
       where: {
-        mostRecentRegistration: Not(IsNull()),
+        mostRecentRegistration: Not(IsNull())
       },
       order: {
-        mostRecentRegistration: "DESC",
-      },
+        mostRecentRegistration: "DESC"
+      }
     });
-    const deviceAccountsReduced = deviceAccounts.map((deviceAccount) => ({
+
+    return deviceAccounts.map((deviceAccount) => ({
       serialNumber: deviceAccount.serialNumber,
-      mostRecentRegistration: deviceAccount.mostRecentRegistration,
+      mostRecentRegistration: deviceAccount.mostRecentRegistration
     }));
-    return deviceAccountsReduced;
   }
 
   // Register === Gather token with serial number + password
   async registerDevice(serialNumber: string, password: string): Promise<NewDeviceToken> {
     const repository = this.ormService.connection.getRepository(DeviceAccountEntity);
-    const deviceAccount: DeviceAccount = await repository.findOne({
-      where: [{ serialNumber }],
+    const deviceAccount = await repository.findOne({
+      where: [{ serialNumber }]
     });
+
     if (deviceAccount === undefined) {
       throw new Error("No device with serial number provided");
     }
+
     const isEqual = this.deviceSessionCoreService.checkSameHashedPassword(password, deviceAccount);
+
     if (!isEqual) {
       throw new Error("No valid password.");
     }
+
     console.log("User registered.");
     const currentUTCTimestamp = new Date().toISOString();
     const newToken = uuidv4();
     const updates = {
       firstRegistration: deviceAccount.firstRegistration || currentUTCTimestamp,
       mostRecentRegistration: currentUTCTimestamp,
-      token: newToken,
+      token: newToken
     };
+
     repository.save({ ...deviceAccount, ...updates });
+
     return { token: newToken };
   }
 }
