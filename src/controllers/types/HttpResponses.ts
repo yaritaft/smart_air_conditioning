@@ -1,6 +1,13 @@
-import * as HttpStatus from "http-status-codes";
+import HttpStatus from "http-status-codes";
 import { ApiDataResponsePaginated, ApiDataResponse, ApiResponse, ApiErrorResponse } from "./ApiResponses";
 
+// You have Response filter to change the data output before sending it to your consumer https://tsed.io/docs/response-filter.html#wrap-responses
+// @ResponseFilter("application/json")
+// export class WrapperResponseFilter implements ResponseFilterMethods {
+//   transform(data: any, ctx: Context) {
+//     return {result: "success", data, errors: []};
+//   }
+// }
 export class HttpResponse<T = any> {
   public result = "success";
   constructor(public status: number, public message?: string, public data?: T | any) {}
@@ -10,6 +17,10 @@ export class HttpResponse<T = any> {
   }
 }
 
+/// TODO you have @tsed/exceptions for that :) and @Catch exception filter to format error before sending it to your consumer
+// https://tsed.io/docs/exceptions.html#exception-filter
+// See examples
+//
 export class HttpErrorResponse extends HttpResponse<any> {
   constructor(public status: number, public message?: string, public data?: any, public error?: Error) {
     super(status, message, data);

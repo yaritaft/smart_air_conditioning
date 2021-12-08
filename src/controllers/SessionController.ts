@@ -1,6 +1,5 @@
-import { BodyParams, Controller, Get, HeaderParams, Inject, Injectable, Post } from "@tsed/common";
-import { DeviceSession, DeviceLoginSession, NewDeviceToken } from "../models/DeviceSession";
-import { ApiDataResponse, ApiErrorResponse } from "./types/ApiResponses";
+import { BodyParams, Controller, HeaderParams, Inject, Injectable, Post } from "@tsed/common";
+import { DeviceLoginSession } from "../models/DeviceSession";
 import { SessionService } from "../services/SessionService";
 import { BadRequest, HttpResponse, Ok } from "./types/HttpResponses";
 import { AdminLoginAttempt } from "../models/AdminAccount";
@@ -33,11 +32,13 @@ export class UserController {
     const token = await this.sessionService.registerDevice(body.serialNumber, body.password);
     return new Ok(token);
   }
+
   @Post("/admin/login")
   async adminLogin(@BodyParams() body: AdminLoginAttempt): Promise<HttpResponse> {
     const token = await this.sessionService.logAdmin(body.username, body.password);
     return new Ok(token);
   }
+
   @Post("/admin/logout")
   async adminLogout(@HeaderParams() header: { token: string }): Promise<HttpResponse> {
     return await this.sessionService

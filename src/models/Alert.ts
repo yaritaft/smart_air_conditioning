@@ -18,7 +18,7 @@ export class Alert {
   timestampAlertReceivedInServer: string;
   timestampAlertCreatedInDeviceAt: string;
   timestampAlertSolvedInDeviceAt?: string;
-  textualAlert: string;
+  textualAlert: string | undefined;
   resolveState: ResolveState;
   viewState: ViewState;
   // FKS device
