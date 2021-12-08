@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import { Inject, Injectable } from "@tsed/common";
 import { Repository } from "typeorm";
-import { ORMService } from "./ORMService";
 import { Report } from "../models/Report";
 import { ReportEntity } from "../entities/Report.entity";
 import { Alert, ResolveState, ViewState } from "../models/Alert";
 import { AlertEntity } from "../entities/Alert.entity";
+import { TypeORMService } from "@tsed/typeorm";
+import { InjectRepository } from "../decorators/injectRepository";
 
 interface CreateAlert {
   errors: string | undefined;
@@ -28,7 +29,13 @@ interface ProcessAlert {
 @Injectable()
 export class AlertService {
   @Inject()
-  private ormService: ORMService;
+  private ormService: TypeORMService;
+
+  @InjectRepository(AlertEntity)
+  private alertRepository: Repository<Alert>;
+
+  @InjectRepository(ReportEntity)
+  private reportRepository: Repository<Report>;
 
   validTemperature(report: Report): boolean {
     return (
@@ -117,17 +124,17 @@ export class AlertService {
   }
 
   async processAlerts(serialNumber: string, reports: Report[]): Promise<Alert | undefined> {
-    const repository = this.ormService.connection.getRepository(AlertEntity);
-    const repositoryReport = this.ormService.connection.getRepository(ReportEntity);
+    const repository = this.alertRepository;
+    const repositoryReport = this.reportRepository;
+
     for (const report of reports) {
       await this.processAlert({ report, repository, repositoryReport, serialNumber });
     }
 
-    return repository.findOne({ resolveState: ResolveState.NEW, serialNumber });
+    return this.alertRepository.findOne({ resolveState: ResolveState.NEW, serialNumber });
   }
 
   async getActiveAlerts(): Promise<Alert[]> {
-    const repository = this.ormService.connection.getRepository(AlertEntity);
-    return repository.find({ resolveState: ResolveState.NEW });
+    return this.alertRepository.find({ resolveState: ResolveState.NEW });
   }
 }

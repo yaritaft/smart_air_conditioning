@@ -1,10 +1,10 @@
-import { Injectable } from "@tsed/common";
-import { Between, Connection, Repository } from "typeorm";
-import { ORMService } from "./ORMService";
+import { Inject, Injectable } from "@tsed/common";
+import { Between } from "typeorm";
 import { HealthStatus, Report } from "../models/Report";
 import { ReportEntity } from "../entities/Report.entity";
 import { AlertService } from "./AlertService";
 import { SessionService } from "./SessionService";
+import { TypeORMService } from "@tsed/typeorm";
 
 export interface UpdateACResponse {
   healthStatus: HealthStatus;
@@ -12,11 +12,14 @@ export interface UpdateACResponse {
 
 @Injectable()
 export class ReportService {
-  private connection: Connection;
-  private repository: Repository<Report>;
+  @Inject()
+  private ormService: TypeORMService;
 
-  constructor(private ormService: ORMService, private sessionService: SessionService, private alertsService: AlertService) {
-  }
+  @Inject()
+  private sessionService: SessionService;
+
+  @Inject()
+  private alertsService: AlertService;
 
   async processReports(token: string, reports: Omit<Report, "timestampReceivedInServerAt">[]): Promise<UpdateACResponse> {
     const device = await this.sessionService.getDeviceByToken(token);
@@ -28,11 +31,15 @@ export class ReportService {
       (oneReport, otherReport) =>
         new Date(oneReport.timestampCreatedInDeviceAt).getTime() - new Date(otherReport.timestampCreatedInDeviceAt).getTime()
     );
-    const repository = this.ormService.connection.getRepository(ReportEntity);
+
+    const repository = this.ormService.get().getRepository(ReportEntity);
+
     for (const report of orderedFromOlderToNewerReports) {
       await repository.save(report);
     }
+
     const activeAfterReportsAlert = await this.alertsService.processAlerts(device.serialNumber, orderedFromOlderToNewerReports);
+
     return { healthStatus: activeAfterReportsAlert ? HealthStatus.NeedsService : HealthStatus.OK };
   }
 
@@ -41,7 +48,7 @@ export class ReportService {
                                        dateFrom,
                                        dateTo
                                      }: { serialNumber: string; dateFrom: string; dateTo: string }) {
-    const repository = this.ormService.connection.getRepository(ReportEntity);
+    const repository = this.ormService.get().getRepository(ReportEntity);
 
     return repository.find({
       where: {
