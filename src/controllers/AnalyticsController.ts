@@ -1,7 +1,7 @@
 import { BodyParams, Controller, Get, HeaderParams, Inject, Post } from "@tsed/common";
 import { Report } from "../models/Report";
 import { Ok } from "./types/HttpResponses";
-import { ReportService, UpdateACResponse } from "../services/ReportService";
+import { ReportService } from "../services/ReportService";
 import { AlertService } from "../services/AlertService";
 import { SessionService } from "../services/SessionService";
 

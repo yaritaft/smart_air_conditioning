@@ -37,13 +37,12 @@ TSED was selected because of it's lightweightness, its decorators and its native
 ### How to run tests locally:
 
 ```
+# in a one terminal
 cat ./envdevcopy > .env
 chmod 711 ./uptests.sh
-# in a first terminal
 ./uptests.sh
-# in second terminal
-npm install && npm start
-# in third terminal
+# in other terminal
+npm install
 npm run test
 ```
 

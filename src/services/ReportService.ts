@@ -1,14 +1,12 @@
 import { Service } from "@tsed/di";
 import { Injectable } from "@tsed/common";
-import { Between, Connection, LessThanOrEqual, MoreThanOrEqual, Repository } from "typeorm";
+import { Between, Connection, Repository } from "typeorm";
 import "reflect-metadata";
 import { ORMService } from "./ORMService";
 import { HealthStatus, Report } from "../models/Report";
 import { ReportEntity } from "../entities/Report.entity";
 import { AlertService } from "./AlertService";
 import { SessionService } from "./SessionService";
-import { ResolveState } from "../models/Alert";
-import { AlertEntity } from "../entities/Alert.entity";
 
 export interface UpdateACResponse {
   healthStatus: HealthStatus;

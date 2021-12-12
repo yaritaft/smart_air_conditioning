@@ -14,7 +14,6 @@ const whitelist = ["127.0.0.1:80", "0.0.0.0:8080", "localhost:80", "localhost:30
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
-    console.log(origin);
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {

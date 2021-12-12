@@ -92,3 +92,26 @@ npm run seed:run
 ## Generate seeds for dev purposes
 
 npm run seed:revert
+
+# SUPER IMPORTANT NOTE FOR TESTING PURPOSES
+
+You have three ways of creating platform test bootstrap.
+
+1.  beforeAll(PlatformTest.bootstrap(Server))
+2.  beforeAll(()=>{PlatformTest.bootstrap(Server)()})
+3.  By doing the first one but also overwriting a part of configuration
+    beforeAll(PlatformTest.bootstrap(Server, {
+    typeorm: [
+    {
+    name: "default",
+    type: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "postgres",
+    password: "123456789",
+    database: "mydatabase",
+    synchronize: true,
+    entities: ["src/**/*.entity.ts"]
+    }
+    ]
+    }));
